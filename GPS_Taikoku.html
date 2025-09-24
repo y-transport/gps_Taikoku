@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>GPS打刻</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 2em; }
+    input, select, button { margin: 1em; padding: 0.8em; font-size: 1em; width: 80%; max-width: 400px; }
+    button { background-color: #0078D4; color: white; border: none; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h2>GPS打刻フォーム</h2>
+  <input type="text" id="name" placeholder="氏名">
+  <select id="type">
+    <option value="出勤">出勤</option>
+    <option value="退勤">退勤</option>
+  </select>
+  <input type="text" id="note" placeholder="備考（任意）">
+  <button onclick="sendLocation()">打刻する</button>
+
+  <script>
+    function sendLocation() {
+      const name = document.getElementById("name").value;
+      const type = document.getElementById("type").value;
+      const note = document.getElementById("note").value;
+
+      if (!name) {
+        alert("氏名を入力してください");
+        return;
+      }
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+
+          const url = "https://script.google.com/macros/s/【ここにWebhook URL】/exec"
+            + "?name=" + encodeURIComponent(name)
+            + "&type=" + encodeURIComponent(type)
+            + "&lat=" + lat
+            + "&lng=" + lng
+            + "&note=" + encodeURIComponent(note);
+
+          fetch(url)
+            .then(response => response.text())
+            .then(data => alert("打刻完了：" + data))
+            .catch(error => alert("打刻失敗：" + error));
+        }, function(error) {
+          alert("位置情報の取得に失敗しました：" + error.message);
+        });
+      } else {
+        alert("この端末では位置情報が取得できません");
+      }
+    }
+  </script>
+</body>
+</html>
