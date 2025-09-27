@@ -43,7 +43,7 @@
                     + "&lng=" + lng
                     + "&note=" + encodeURIComponent(note);
 
-         const confirmMessage = `以下の内容で送信しますか？\n\n氏名: ${name}\n種別: ${type}\n備考: ${note}`;
+const confirmMessage = `以下の内容で送信しますか？\n\n氏名: ${name}\n種別: ${type}\n備考: ${note}`;
 
           if (confirm(confirmMessage)) {
             fetch(url)
@@ -63,5 +63,3 @@
   </script>
 </body>
 </html>
-
-
