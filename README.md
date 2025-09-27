@@ -1,2 +1,2 @@
-# gps_Taikoku
+# gps_Dakoku
 GPS打刻ページ
