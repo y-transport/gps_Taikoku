@@ -33,34 +33,28 @@
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
+  const lat = position.coords.latitude;
+  const lng = position.coords.longitude;
 
-        const url = "https://script.google.com/macros/s/AKfycbw_nlt0XXp6Vv8xXuzleusd9XMFyDR2UBJG6NbPjoRVjPUwRDxROKCHHz6CK3mdMEFm/exec"
-                  + "?name=" + encodeURIComponent(name)
-                  + "&type=" + encodeURIComponent(type)
-                  + "&lat=" + lat
-                  + "&lng=" + lng
-                  + "&note=" + encodeURIComponent(note);
+  const url = "https://script.google.com/macros/s/AKfycb.../exec"
+            + "?name=" + encodeURIComponent(name)
+            + "&type=" + encodeURIComponent(type)
+            + "&lat=" + lat
+            + "&lng=" + lng
+            + "&note=" + encodeURIComponent(note);
 
-        const confirmMessage = `以下の内容で送信しますか？\n\n氏名: ${name}\n種別: ${type}\n備考: ${note}\n位置: ${lat}, ${lng}`;
-        if (confirm(confirmMessage)) {
-          fetch(url)
-            .then(response => response.text())
-            .then(data => alert("打刻完了：" + data))
-            .catch(error => alert("打刻失敗：" + error));
-        } else {
-          alert("送信をキャンセルしました。");
-        }
-      }, function(error) {
-        alert("位置情報の取得に失敗しました：" + error.message);
-      });
+  setTimeout(function() {
+    const confirmMessage = `以下の内容で送信しますか？\n\n氏名: ${name}\n種別: ${type}\n備考: ${note}\n位置: ${lat}, ${lng}`;
+    if (confirm(confirmMessage)) {
+      fetch(url)
+        .then(response => response.text())
+        .then(data => alert("打刻完了：" + data))
+        .catch(error => alert("打刻失敗：" + error));
     } else {
-      alert("この端末では位置情報が取得できません");
+      alert("送信をキャンセルしました。");
     }
-  }
+  }, 100);
+});
 </script>
 </body>
 </html>
-
-
