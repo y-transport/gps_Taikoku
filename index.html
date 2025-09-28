@@ -5,47 +5,62 @@
   <title>GPS打刻</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-  body {
-    background-color: #000; /* 黒背景 */
-    color: #00FF00;         /* 緑文字 */
-    font-family: 'Courier New', monospace; /* タイプ風フォント */
-    text-align: center;
-    padding: 2em;
-  }
+    body {
+      background-color: #000;
+      color: #00FF00;
+      font-family: 'Courier New', monospace;
+      text-align: center;
+      padding: 2em;
+    }
 
-  h2 {
-    font-size: 1.5em;
-    margin-bottom: 1em;
-    text-shadow: 0 0 10px #00FF00;
-  }
+    h2 {
+      font-size: 1.5em;
+      margin-bottom: 1em;
+      text-shadow: 0 0 10px #00FF00;
+    }
 
-  input, select, button {
-    margin: 1em;
-    padding: 0.8em;
-    font-size: 1em;
-    width: 80%;
-    max-width: 400px;
-    background-color: #000;
-    color: #00FF00;
-    border: 1px solid #00FF00;
-    border-radius: 4px;
-  }
+    input, select, button {
+      margin: 1em;
+      padding: 0.8em;
+      font-size: 1em;
+      width: 80%;
+      max-width: 400px;
+      background-color: #000;
+      color: #00FF00;
+      border: 1px solid #00FF00;
+      border-radius: 4px;
+    }
 
-  button {
-    background-color: #003300;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
+    button {
+      background-color: #003300;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
 
-  button:hover {
-    background-color: #006600;
-  }
+    button:hover {
+      background-color: #006600;
+    }
 
-  input::placeholder, #note::placeholder {
-    color: #00FF00;
-    opacity: 0.6;
-  }
-</style>
+    input::placeholder, #note::placeholder {
+      color: #00FF00;
+      opacity: 0.6;
+    }
+
+    #status {
+      color: #00FF00;
+      font-size: 1.2em;
+      margin-top: 1em;
+      text-shadow: 0 0 5px #00FF00;
+      animation: blink 1s infinite;
+      display: none;
+    }
+
+    @keyframes blink {
+      0%   { opacity: 1; }
+      50%  { opacity: 0.2; }
+      100% { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
   <h2>Yokohama Transport<br>GPS Attendance Form</h2>
@@ -57,17 +72,21 @@
   </select>
   <input type="text" id="note" placeholder="備考（任意）">
   <button onclick="sendLocation()">打刻する</button>
+  <div id="status">打刻中...</div>
 
   <script>
     function sendLocation() {
       const name = document.getElementById("name").value;
       const type = document.getElementById("type").value;
       const note = document.getElementById("note").value;
+      const status = document.getElementById("status");
 
       if (!name) {
         alert("氏名を入力してください");
         return;
       }
+
+      status.style.display = "block"; // 打刻中... 表示
 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -85,21 +104,27 @@
           if (confirm(confirmMessage)) {
             fetch(url)
               .then(response => response.text())
-              .then(data => alert("打刻完了：" + data))
-              .catch(error => alert("打刻失敗：" + error));
+              .then(data => {
+                alert("打刻完了：" + data);
+                status.style.display = "none"; // 打刻中... 非表示
+              })
+              .catch(error => {
+                alert("打刻失敗：" + error);
+                status.style.display = "none"; // エラー時も非表示
+              });
           } else {
             alert("送信をキャンセルしました。");
+            status.style.display = "none"; // キャンセル時も非表示
           }
         }, function(error) {
           alert("位置情報の取得に失敗しました：" + error.message);
+          status.style.display = "none";
         });
       } else {
         alert("この端末では位置情報が取得できません");
+        status.style.display = "none";
       }
     }
   </script>
 </body>
 </html>
-
-
-
