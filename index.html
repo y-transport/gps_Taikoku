@@ -5,10 +5,47 @@
   <title>GPS打刻</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: sans-serif; text-align: center; padding: 2em; }
-    input, select, button { margin: 1em; padding: 0.8em; font-size: 1em; width: 80%; max-width: 400px; }
-    button { background-color: #0078D4; color: white; border: none; border-radius: 6px; }
-  </style>
+  body {
+    background-color: #000; /* 黒背景 */
+    color: #00FF00;         /* 緑文字 */
+    font-family: 'Courier New', monospace; /* タイプ風フォント */
+    text-align: center;
+    padding: 2em;
+  }
+
+  h2 {
+    font-size: 1.5em;
+    margin-bottom: 1em;
+    text-shadow: 0 0 10px #00FF00;
+  }
+
+  input, select, button {
+    margin: 1em;
+    padding: 0.8em;
+    font-size: 1em;
+    width: 80%;
+    max-width: 400px;
+    background-color: #000;
+    color: #00FF00;
+    border: 1px solid #00FF00;
+    border-radius: 4px;
+  }
+
+  button {
+    background-color: #003300;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #006600;
+  }
+
+  input::placeholder, #note::placeholder {
+    color: #00FF00;
+    opacity: 0.6;
+  }
+</style>
 </head>
 <body>
   <h2>GPS打刻フォーム</h2>
@@ -63,4 +100,5 @@
   </script>
 </body>
 </html>
+
 
